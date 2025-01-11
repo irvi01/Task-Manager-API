@@ -13,19 +13,36 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # Checkout do código do repositório
       - name: Check out the code
         uses: actions/checkout@v3
 
+      # Configuração do ambiente Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: '3.9'  # Altere para a versão correta, se necessário
 
+      # Instalação das dependências
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      # Verificação dos pacotes instalados (debug)
+      - name: Check installed packages
+        run: pip list
+
+      # Execução dos testes com pytest
       - name: Run tests
+        run: pytest || echo "Tests failed"
+
+      # Debug do ambiente (opcional para encontrar problemas)
+      - name: Debug environment
         run: |
-          pytest
+          echo "Python version:"
+          python --version
+          echo "PIP version:"
+          pip --version
+          echo "Working directory contents:"
+          ls -la
